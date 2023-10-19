@@ -14,7 +14,7 @@ class ProductController {
         }
     }
 
-    async getProductbyId(req, res) {
+    async getProductById(req, res) {
         try {
             const pid = req.params.pid;
             const product = await this.productService.getProductbyId(pid);
@@ -105,7 +105,8 @@ class ProductController {
                 });
               }
         } catch (error) {
-            this.handleError(res, "Error Interno", error);
+            console.log(error);
+            res.status(500).send({status: "error", message: "Error Interno"});
         }
     }
 
@@ -153,11 +154,6 @@ class ProductController {
             this.handleError(res, "Error Interno", error);
         }
     }
-
-    handleError(res, message, error) {
-        console.error(error);
-        res.status(500).send({ status: "error", message });
-    }
 }
 
-export default new ProductController();
+export default ProductController;

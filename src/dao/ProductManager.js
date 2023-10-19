@@ -74,14 +74,13 @@ class ProductManager {
     }
 
     async getProductById(id) {
-        if (this.validateId(id)) {
-            return await productModel.findOne({_id:id}).lean() || null;
-        } else {
-            console.log("Not found!");
-            
+        try {
+            return await productModel.findById(id).lean();
+          } catch (error) {
+            console.error("Error fetching product by id:", error);
             return null;
+          }
         }
-    }
 
     validateId(id) {
         return id.length === 24 ? true : false;

@@ -1,6 +1,11 @@
 import { cartModel } from "./models/cart.model.js";
+import mongoose from "mongoose";
+import ProductManager from "./ProductManager.js";
 
 class CartManager {
+    constructor() {
+      this.productManager = new ProductManager();
+    }
     async newCart() {
         console.log("Cart created!");
         return await cartModel.create({products:[]});
@@ -20,23 +25,64 @@ class CartManager {
         return await cartModel.find().lean();
     }
 
-    async addProduct(cid, pid) {
+    async addProduct (cid, pid, quantity) {
         try {
-            if (await cartModel.exists({_id:cid, products:{$elemMatch:{product:pid}}})) {
-                await cartModel.updateOne({_id:cid, products:{$elemMatch:{product:pid}}}, {$inc:{"products.$.quantity":1}}, {new:true, upsert:true});
-            } else {
-                await cartModel.updateOne({_id:cid}, {$push:{products:{"product":pid, "quantity":1}}}, {new:true, upsert:true});
-            }
-
-            console.log("Product added!");
+          console.log(`Adding product ${pid} to cart ${cid}`);
     
-            return true;
+          if (
+            mongoose.Types.ObjectId.isValid(cid) &&
+            mongoose.Types.ObjectId.isValid(pid)
+          ) {
+            const product = await this.productManager.getProductById(pid);
+    
+            console.log("Stock antes de agregar al carrito:", product.stock);
+    
+            if (!product) {
+              console.log("Product not found!");
+              return {
+                status: "error",
+                message: "Producto no encontrado!",
+              };
+            }
+    
+            if (product.stock < quantity) { 
+              return { status: "error", message: "Stock insuficiente!" };
+          }
+    
+            const updateResult = await cartModel.updateOne(
+              { _id: cid, "products.product": pid },
+              { $inc: { "products.$.quantity": 1 } }
+            );
+    
+            console.log("Update result:", updateResult);
+            if (updateResult.matchedCount === 0) {
+              const pushResult = await cartModel.updateOne(
+                { _id: cid },
+                { $push: { products: { product: pid, quantity: 1 } } }
+              );
+    
+              console.log("Push result:", pushResult);
+            }
+    
+            return {
+              status: "ok",
+              message: "El producto se agregó correctamente!",
+            };
+          } else {
+            return {
+              status: "error",
+              message: "ID inválido!",
+            };
+          }
         } catch (error) {
-            console.log("Not found!");
-                
-            return false;
+          console.error(error);
+          return {
+            status: "error",
+            message: "Ocurrió un error al agregar el producto al carrito!",
+          };
         }
-    }
+      }
+    
 
     async updateProducts(cid, products) {
         try {

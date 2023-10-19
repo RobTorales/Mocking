@@ -10,13 +10,12 @@ class AuthServices {
     }
 
     async LoginUser(email, password) {
-        const user = await this.userManager.login(email, password);
+        const user = await this.UserManager.login(email, password);
         if (!user) {
           return null;
         }
     
         let token = jwt.sign({ email, password, role: user.role }, PRIVATE_KEY, { expiresIn: "24h" });
-        res.cookie("robCookieToken", token, { maxAge: 3600 * 1000, httpOnly: true });
     
         return { user, token };
       }

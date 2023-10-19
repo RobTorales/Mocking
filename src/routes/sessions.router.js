@@ -1,6 +1,7 @@
 import express from "express";
 import passport from "passport";
 import { createHash, passportCall, authorization, isValidPassword } from "../utils.js";
+import UserManager from "../dao/UserManager.js";
 import AuthController from "../controllers/auth.controller.js";
 import UserController from "../controllers/user.controllers.js";
 
@@ -11,8 +12,8 @@ const userController = new UserController();
 const authController = new AuthController();
 
 
-router.post("/login", (req, res) => authController.login(req, res));
-router.post("/register", userController.register);
+router.post("/login", (req, res) => authController.loginUser(req, res));
+router.post("/register", userController.Register);
 router.get("/restore", userController.restorePassword);
 router.get(
   "/github",

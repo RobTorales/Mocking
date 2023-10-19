@@ -19,7 +19,7 @@ class CartServices{
         if (resultado) {
             return{status:"ok", message:"El Producto se agregó correctamente!"};
         } else {
-            throw new Error("Eror al agregar el producto al carrito");
+            throw new Error("Error al agregar el producto al carrito");
         }
     }
 

@@ -3,7 +3,7 @@ import CartServices from "../services/cart.services.js";
 
 
 class CartController {
-    contructor (){
+    constructor (){
         this.cartServices = new CartServices ();
     }
 
@@ -34,12 +34,11 @@ class CartController {
         const result = await this.cartServices.addProduct(cid, pid);
     
         if (result) {
-            res.send({status:"ok", message:"El producto se agregó correctamente!"});
+            res.send({ status: "ok", message: "El producto se agregó correctamente!" });
         } else {
-            res.status(400).send({status:"error", message:"Error! No se pudo agregar el Producto al Carrito!"});
+            res.status(400).send({ status: "error", message: "Error! No se pudo agregar el Producto al Carrito!" });
         }
     }
-
     updateCart = async (req, res) => {
         const cid = req.params.cid;
         const products = req.body.products;
