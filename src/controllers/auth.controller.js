@@ -13,7 +13,7 @@ class AuthController {
         if (!user) {
             return res.status(401).send({ status: "error", message: "Error! El usuario no existe!" });
         }
-        const userData = { token: Math.random().toString(36).substring(7) }; // Asigna aquí el valor del token y otros datos del usuario
+        const userData = { token: Math.random().toString(36).substring(7) }; 
         res.cookie("robCookieToken", userData.token, { maxAge: 3600 * 1000, httpOnly: true });
         this.CartServices.newCart();    
         return res.status(200).json({ status: "success", user: userData.user, redirect: "/products" });

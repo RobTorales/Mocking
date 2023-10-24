@@ -36,5 +36,3 @@ router.get("/current", passportCall("jwt"), authorization("user"), (req, res) =>
 
  
 export default router;
-
-

@@ -18,7 +18,6 @@ export const passportCall = (strategy) => {
 
             if (!user) {
                 return res.status(401).send({error:info.messages ? info.messages : info.toString()})
-                //return done(null, false, {message:"El usuario ingresado no existe!"});
             }
 
             req.user = user;

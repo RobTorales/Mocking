@@ -34,12 +34,12 @@
                 <div class="card border-0 mb-4">
                     
                     <div class="card-body text-center ">
-                        <img src="{{this.thumbnails}}" class="img-fluid" alt="{{this.title}}">
+                        <a href="/products/{{this._id}}" class="text-decoration-none">
+                            <img src="{{this.thumbnails}}" class="img-fluid" alt="{{this.title}}">
+                        </a>
                         <div>{{this.title}}</div>
                         <p>${{this.price}}</p>
-                        <a href="/products/{{this._id}}" class="text-decoration-none">
-                            <p><button class="boton" onclick="agregarProductoAlCarrito('{{product._id}}')"><p class="p">Ver detalles</p></button></p>
-                        </a>
+                        <p><button class="boton" onclick="agregarProductoAlCarrito('{{product._id}}')"><p class="p">Agregar </p></button></p>
                     </div>
                 </div>
             </div>
@@ -79,3 +79,4 @@
 </div>
 
 <script src="js/cart.js"></script>
+<script src="js/products.js"></script>
