@@ -9,7 +9,7 @@ export const generateMockProduct = () => {
         price: parseInt(faker.string.numeric(3)),
         stock: parseInt(faker.string.numeric(2)),
         category: faker.commerce.department(),
-        thumbnail: faker.image.url()
+        thumbnails: faker.image.url()
     }
     product.available = product.stock > 0 ? true : false;
     return product;

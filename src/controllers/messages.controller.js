@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { GMAIL_PASSWORD, GMAIL_USER } from "../config/config.js";
+import { GMAIL_PASS, GMAIL_USER } from "../config/config.js";
 import __dirname from "../utils.js";
 
 const transporter = nodemailer.createTransport({
@@ -7,7 +7,7 @@ const transporter = nodemailer.createTransport({
   port: 587,
   auth: {
     user: GMAIL_USER,
-    pass: GMAIL_PASSWORD,
+    pass: GMAIL_PASS,
   },
   tls: {
     rejectUnauthorized: false
