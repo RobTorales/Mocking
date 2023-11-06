@@ -16,6 +16,7 @@ import sessionsRouter from "./routes/sessions.router.js";
 import mockingRouter from "./mocking/mock.router.js";
 import viewsRouter from "./routes/views.router.js";
 import session from "express-session";
+import morgan from "morgan";
 import { MONGODB_CNX_STR, PORT, SECRET_SESSIONS } from "./config/config.js";
 import cookieParser from "cookie-parser";
 import initializeGitHubPassport from "./github/ingreso.github.js";
@@ -43,7 +44,7 @@ app.engine('handlebars', expressHandlebars.engine({
 }));
 app.use(session({
     store: new MongoStore({
-        mongoUrl: "mongodb+srv://roberto1608torales:roberto1608@cluster0.ggriuqe.mongodb.net/ecommerce?retryWrites=true&w=majority",
+        mongoUrl: MONGODB_CNX_STR,
         collectionName:"sessions"
     }),
     secret: "S3CR3T0",

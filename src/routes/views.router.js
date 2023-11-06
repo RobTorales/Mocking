@@ -29,12 +29,12 @@ router.get("/cart", async (req, res) => {
     res.render("products", {products});
 });
 
-viewsRouter.post("/carts/:cid/purchase", async (req, res) => {
+router.post("/carts/:cid/purchase", async (req, res) => {
     const cid = req.params.cid;
     cartController.getPurchase(req, res, cid);
   });
 
-  viewsRouter.get("/carts/:cid", async (req, res) => {
+  router.get("/carts/:cid", async (req, res) => {
     const cid = req.params.cid;
     const cart = await CM.getCart(cid);
   

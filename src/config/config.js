@@ -1,6 +1,24 @@
 import dotenv from "dotenv";
+import { Command } from "commander";
 
-dotenv.config();
+const program = new Command();
+
+program 
+       .option('-d', 'Variable for debug', false)
+       .option('-p <port>', 'Server port', 9090)
+       .option('--mode <mode>', 'Option mode', 'development')
+program.parse();
+
+console.log("Mode Option: ", program.opts().mode);
+
+const environment = program.opts().mode;
+
+dotenv.config({
+       path:
+         environment === "production"
+           ? "./config/.env.production"
+           : "./config/.env.development",
+     });
 
 export const PORT = 8080;
 export const MONGODB_CNX_STR = process.env.MONGODB_CNX_STR;
@@ -17,3 +35,7 @@ export const GMAIL_PASS = process.env.EMAIL_PASS;
 export const TWILIO_NUMBER = process.env.TWILIO_NUMBER;
 export const TWILIO_SID = process.env.TWILIO_SID;
 export const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN;
+
+export default{
+    environment: environment
+}
