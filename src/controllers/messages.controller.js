@@ -37,13 +37,13 @@ const mailOptionsWithAttachments = {
   html: `<div>
               <h1>Esto es un Test de envio de correos con Nodemailer!</h1>
               <p>Ahora usando imagenes: </p>
-              <img src="cid:okunaLogo"/>
+              <img src="cid:burgerfactorylogo"/>
           </div>`,
   attachments: [
     {
-      filename: "Okuna",
-      path: __dirname+'/src/public/images/okunaLogo.png',
-      cid: "okunaLogo",
+      filename: "Burger Factory",
+      path: __dirname+'/public/images/burger factory.png',
+      cid: "burgerfactorylogo",
     },
   ],
 };
