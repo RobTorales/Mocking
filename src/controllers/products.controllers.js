@@ -1,4 +1,7 @@
 import ProductService from "../services/product.services.js";
+import mongoose from "mongoose";
+import CustomeError from "../services/error/customeError.js";
+import { productError } from "../services/error/errorMessages/product.error.js";
 
 class ProductController {
     constructor() {
@@ -10,8 +13,15 @@ class ProductController {
             const products = await this.productService.getProducts(req.query);
             res.send(products);
         } catch (error) {
-            this.handleError(res, "Error al obtener productos", error);
-        }
+            const productErr = new CustomeError({
+                name: "Product Fetch Error",
+                message: "Error al obtener los productos",
+                code:500,
+                cause:error.message,
+              });
+              console.error(productErr);
+              res.status(500).send({status:"error", message:"Error al obtener los productos"})
+            }
     }
 
     async getProductById(req, res) {
@@ -19,11 +29,16 @@ class ProductController {
             const pid = req.params.pid;
             const product = await this.productService.getProductbyId(pid);
             if (!product) {
-                return res.status(404).send({ status: "error", message: "Producto no encontrado" });
-            }
-            res.json(product);
-        } catch (error) {
-            this.handleError(res, "Error al encontrar producto por su ID", error);
+                throw new CustomeError({
+                    name: "Product not found",
+                    message: "El producto no pudo ser encontrado",
+                    code:404,
+                  });
+        } 
+            res.status(200).json({ status: "success", data: product });
+            return;
+        }catch (error) {
+            next(error)
         }
     }
 
@@ -60,10 +75,17 @@ class ProductController {
                 });
                 return;
             } else {
-                this.handleError(res, "No se pudo agregar el producto");
+                res.status(500).send({
+                    status: "error",
+                    message: "Error! No se pudo agregar el Producto!",
+                  });
             }
         } catch (error) {
-            this.handleError(res, "Error al agregar producto", error);
+            console.error("Error en addProduct:", error, "Stack:", error.stack);
+            res
+                .status(500)
+                .send({ status: "error", message: "Internal server error." });
+            return;
         }
     }
 
@@ -151,7 +173,10 @@ class ProductController {
                 });
             }
         } catch (error) {
-            this.handleError(res, "Error Interno", error);
+            res.status(500).send({
+                status: "error",
+                message: "Error interno del servidor",
+              });
         }
     }
 }
